@@ -1,25 +1,44 @@
-function getRandomInteger(min, max) {
-  const randomNum = min + Math.random() * (max - min);
-  let roundNum = Math.round(randomNum);
+const getRandomInteger = (min, max) => {
   if (min < 0 || max < 0) {
-    roundNum = NaN;
+    return NaN;
+  }
+  if (typeof min !== 'number' || typeof max !== 'number') {
+    return NaN;
   }
   if (min === max) {
-    roundNum = 'Задайте разные числа';
+    return 'Задайте разные числа';
   }
-  return roundNum;
-}
-getRandomInteger(20, 10);
+  if(min > max){
+    const temporary = min;
+    min = max;
+    max = temporary;
+  }
+  const randomValue = min + Math.random() * (max - min);
+  const roundValue = Math.round(randomValue);
+  return roundValue;
+};
 
-function getRandomFloat(min, max, qty) {
-  const randomNum = min + Math.random() * (max - min);
-  let floatNum = randomNum.toFixed(qty);
-  if (min < 0 || max < 0 || qty < 0) {
-    floatNum = NaN;
+const getRandomFloat = (min, max, quantity) => {
+  if (min < 0 || max < 0 || quantity < 0) {
+    return NaN;
+  }
+  if (typeof min !== 'number' || typeof max !== 'number' || typeof max !== 'number') {
+    return NaN;
   }
   if (min === max) {
-    floatNum = 'Задайте разные числа';
+    return 'Задайте разные числа';
   }
-  return floatNum;
-}
+  if(min > max){
+    const temporary = min;
+    min = max;
+    max = temporary;
+  }
+  const randomValue = min + Math.random() * (max - min);
+  const floatValue = Number(randomValue.toFixed(quantity));
+  return floatValue;
+};
+
+getRandomInteger(40, 10);
 getRandomFloat(20, 40, 5);
+
+
