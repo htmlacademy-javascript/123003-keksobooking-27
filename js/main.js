@@ -11,7 +11,7 @@ const TITLE = [
   'Студия в центре города',
   'Прекрасное место с видом на пруд',
   'Недорогая конура',
-]
+];
 
 const DESCRIPTION = [
   'Пространство полностью готово для вашего комфортного проживания',
@@ -24,7 +24,7 @@ const DESCRIPTION = [
   'Идеальная атмосфера для вашего проживания ',
   'Экологически чистый район',
   'Идеально для владельцев питомцев: рядом парк и сквер',
-]
+];
 
 const FEATURES = [
   'wifi',
@@ -33,7 +33,7 @@ const FEATURES = [
   'washer',
   'elevator',
   'conditioner',
-]
+];
 
 const TYPE = [
   'palace',
@@ -41,25 +41,25 @@ const TYPE = [
   'house',
   'bungalow',
   'hotel'
-]
+];
 
 const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
-]
+];
 
 const CHECKIN = [
   '12:00',
   '13:00',
   '14:00',
-]
+];
 
 const CHECKOUT = [
   '12:00',
   '13:00',
   '14:00',
-]
+];
 
 const getRandomInteger = (min, max) => {
   if (min < 0 || max < 0) {
@@ -96,9 +96,7 @@ const locate = {
   lng: getRandomFloat(139.70000, 139.80000, 5),
 };
 
-const getRandomArrayElement = (array) => {
-  return array[getRandomInteger(0, array.length - 1)];
-};
+const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
 const createOffer = (index) => ({
   author: {
@@ -124,8 +122,8 @@ const createOffer = (index) => ({
 });
 
 const similarOffers = Array.from({
-    length: NEARBY_OFFERS_COUNT
-  },
-  (_, index) => createOffer(index + 1)
+  length: NEARBY_OFFERS_COUNT
+},
+(_, index) => createOffer(index + 1)
 );
-console.log(similarOffers);
+similarOffers();
