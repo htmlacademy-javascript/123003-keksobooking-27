@@ -1,6 +1,6 @@
-const NEARBY_OFFERS_COUNT = 10;
+const NEARBY_ADVERTS_COUNT = 10;
 
-const TITLE = [
+const TITLES = [
   'Роскошная   меблированная   квартира с дизайнерским ремонтом',
   'Просторная студия в стиле лофт',
   'Уютная квартира в живописном районе',
@@ -13,7 +13,7 @@ const TITLE = [
   'Недорогая конура',
 ];
 
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'Пространство полностью готово для вашего комфортного проживания',
   'Все детали продуманы до мелочей',
   'Комфортное освещение, натуральные материалы отделки и мебели, стильный интерьер',
@@ -35,7 +35,7 @@ const FEATURES = [
   'conditioner',
 ];
 
-const TYPE = [
+const TYPES = [
   'palace',
   'flat',
   'house',
@@ -49,19 +49,26 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-const CHECKIN = [
+const CHECKINS = [
   '12:00',
   '13:00',
   '14:00',
 ];
 
-const CHECKOUT = [
+const CHECKOUTS = [
   '12:00',
   '13:00',
   '14:00',
 ];
 
-const getRandomInteger = (min, max) => {
+const Location = {
+  MIN_LATITUDE: 35.65000,
+  MAX_LATITUDE: 35.70000,
+  MIN_LONGITUDE: 139.70000,
+  MAX_LONGITUDE: 139.80000,
+};
+
+function getRandomInteger(min, max) {
   if (min < 0 || max < 0) {
     return NaN;
   }
@@ -74,7 +81,7 @@ const getRandomInteger = (min, max) => {
   const randomValue = min + Math.random() * (max - min);
   const roundValue = Math.round(randomValue);
   return roundValue;
-};
+}
 
 const getRandomFloat = (min, max, quantity) => {
   if (min < 0 || max < 0 || quantity < 0) {
@@ -91,39 +98,42 @@ const getRandomFloat = (min, max, quantity) => {
   return floatValue;
 };
 
-const locate = {
-  lat: getRandomFloat(35.65000, 35.70000, 5),
-  lng: getRandomFloat(139.70000, 139.80000, 5),
+const getRandomLatitude = () => getRandomFloat(Location.MIN_LATITUDE, Location.MAX_LATITUDE, 5);
+
+const getRandomLongitude = () => getRandomFloat(Location.MIN_LONGITUDE, Location.MAX_LONGITUDE, 5);
+
+const getRandomArrayItem = (items) => items[getRandomInteger(0, items.length - 1)];
+
+const createAdvert = (id) => {
+  const location = {
+    lat: getRandomLatitude(),
+    lng: getRandomLongitude(),
+  };
+  return {
+    author: {
+      avatar: `img/avatars/user${id.toString().padStart(2,'0')}.png`,
+    },
+    offer: {
+      title: getRandomArrayItem(TITLES),
+      address: `${location.lat}, ${location.lng}`,
+      price: getRandomInteger(1,100000),
+      type: getRandomArrayItem(TYPES),
+      rooms: getRandomInteger(1,3),
+      guests: getRandomInteger(1,10),
+      checkin: getRandomArrayItem(CHECKINS),
+      checkout: getRandomArrayItem(CHECKOUTS),
+      features: FEATURES.slice(0, getRandomInteger(1,FEATURES.length)),
+      description: getRandomArrayItem(DESCRIPTIONS),
+      photos: PHOTOS.slice(0, getRandomInteger(1,PHOTOS.length)),
+    },
+    location
+  };
 };
 
-const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
-
-const createOffer = (index) => ({
-  author: {
-    avatar: `img/avatars/user${index.toString().padStart(2,'0')}.png`,
-  },
-  offer: {
-    title: getRandomArrayElement(TITLE),
-    address: `${locate.lat}, ${locate.lng}`,
-    price: getRandomInteger(1,100000),
-    type: getRandomArrayElement(TYPE),
-    rooms: getRandomInteger(1,3),
-    guests: getRandomInteger(1,10),
-    checkin: getRandomArrayElement(CHECKIN),
-    checkout: getRandomArrayElement(CHECKOUT),
-    features: FEATURES.slice(0, FEATURES.length),
-    description: getRandomArrayElement(DESCRIPTION),
-    photos: PHOTOS.slice(0, PHOTOS.length),
-  },
-  location: {
-    lat: locate.lat,
-    lng: locate.lng,
-  },
-});
-
-const similarOffers = Array.from({
-  length: NEARBY_OFFERS_COUNT
+const similarAdverts = Array.from({
+  length: NEARBY_ADVERTS_COUNT
 },
-(_, index) => createOffer(index + 1)
+(_, index) => createAdvert(index + 1)
 );
+
 similarOffers();
