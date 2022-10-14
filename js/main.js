@@ -136,4 +136,4 @@ const similarAdverts = Array.from({
 (_, index) => createAdvert(index + 1)
 );
 
-similarOffers();
+similarAdverts();
