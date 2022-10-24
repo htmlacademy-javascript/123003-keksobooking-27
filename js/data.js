@@ -106,5 +106,6 @@ const createSimilarAdverts = () => Array.from({
 },
 (_, index) => createAdvert(index + 1)
 );
+const similarAdverts = createSimilarAdverts();
 
-export {createSimilarAdverts};
+export {similarAdverts};
