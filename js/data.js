@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomFloat, getRandomArrayItem} from './utils.js';
+import {getRandomInteger, getRandomFloat, getRandomArrayItem} from './random.js';
 
 const NEARBY_ADVERTS_COUNT = 10;
 

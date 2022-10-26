@@ -1,6 +1,7 @@
-import './utils.js';
-import {createSimilarAdverts} from './data.js';
+import { renderCards } from './map.js';
+import { createSimilarAdverts } from './data.js';
 
+const adverts = createSimilarAdverts();
 
-createSimilarAdverts();
+renderCards(adverts);
 
