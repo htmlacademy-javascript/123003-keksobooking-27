@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomFloat, getRandomArrayItem} from './utils.js';
+import {getRandomInteger, getRandomFloat, getRandomArrayItem} from './random.js';
 
 const NEARBY_ADVERTS_COUNT = 10;
 
@@ -106,6 +106,5 @@ const createSimilarAdverts = () => Array.from({
 },
 (_, index) => createAdvert(index + 1)
 );
-const similarAdverts = createSimilarAdverts();
 
-export {similarAdverts};
+export {createSimilarAdverts};
