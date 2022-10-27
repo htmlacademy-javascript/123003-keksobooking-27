@@ -1,12 +1,14 @@
 import { renderCards } from './map.js';
 import { createSimilarAdverts } from './data.js';
-import { deactivateForms, activateForms } from './form.js';
-
+import {deactivateAdvertForm, activateAdvertForm} from './form.js';
+import {deactivateFilterForm, activateFilterForm} from './filter.js';
 const adverts = createSimilarAdverts();
 
 renderCards(adverts);
 
-deactivateForms();
-activateForms();
+deactivateAdvertForm();
+activateAdvertForm();
+deactivateFilterForm();
+activateFilterForm();
 
 
