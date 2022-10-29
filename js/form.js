@@ -62,10 +62,10 @@ const validateAdvertForm = () => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if(isValid){
-      console.log('Можно отправлять');
+      //console.log('Можно отправлять');
     }
     else{
-      console.log(pristine.getErrors());
+      //console.log(pristine.getErrors());
     }
   });
 };
