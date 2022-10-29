@@ -57,6 +57,7 @@ const validateAdvertForm = () => {
   guestsField.addEventListener('change', onRoomsChange);
 
   pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
+  pristine.addValidator(guestsField, validateRooms);
 
   advertForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
