@@ -34,14 +34,14 @@ const validateAdvertForm = () => {
     errorTextClass: 'ad-form__error'
   });
 
-  const roomsOption = {
+  const guestsToRooms = {
     '1': ['1'],
     '2': ['1', '2'],
     '3': ['1', '2', '3'],
     '100': ['0'],
   };
 
-  const priceOption = {
+  const pricesToTypes = {
     'bungalow': 0,
     'flat': 1000,
     'hotel': 3000,
@@ -49,23 +49,21 @@ const validateAdvertForm = () => {
     'palace': 10000
   };
 
-  const validateRooms = () => roomsOption[roomsField.value].includes(guestsField.value);
+  const validateRooms = () => guestsToRooms[roomsField.value].includes(guestsField.value);
 
-  const validateMinPrice = (value) => value >= priceOption[typesField.value];
+  const validateMinPrice = (value) => value >= pricesToTypes[typesField.value];
 
   const onRoomsChange = () => {
     pristine.validate(roomsField);
   };
 
   const onTypesChange = () => {
-    priceField.setAttribute('min', priceOption[typesField.value]);
-    priceField.setAttribute('placeholder', priceOption[typesField.value]);
+    const value = pricesToTypes[typesField.value];
+    priceField.min = value;
+    priceField.placeholder = value;
     pristine.validate(priceField);
   };
 
-  const onPriceChange = () => {
-    priceField.value = priceField.value.replace(/[e,+,-]/, '');
-  };
 
   const getRoomsErrorMessage = () => {
     const guestsText = Array.from(guestsFields).find((option)=>option.value === guestsField.value).textContent;
@@ -76,23 +74,15 @@ const validateAdvertForm = () => {
     return `Невозможно забронировать ${roomsText} ${guestsText}`;
   };
 
-  const getMinPriceErrorMessage = () => `Минимальное значение -  ${priceOption[typesField.value]}`;
+  const getMinPriceErrorMessage = () => `Минимальное значение -  ${pricesToTypes[typesField.value]}`;
 
   roomsField.addEventListener('change', onRoomsChange);
   guestsField.addEventListener('change', onRoomsChange);
   typesField.addEventListener('change', onTypesChange);
-  priceField.addEventListener('input', onPriceChange);
 
   pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
   pristine.addValidator(guestsField, validateRooms);
   pristine.addValidator(priceField, validateMinPrice, getMinPriceErrorMessage);
-
-
-  // priceField.addEventListener('change',()=>{
-  //   if(!priceField.value.match(positiveIntegerRegexp)){
-  //     priceField.setAttribute('value','');
-  //   }
-  // });
 
   advertForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
