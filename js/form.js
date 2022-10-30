@@ -7,6 +7,10 @@ const guestsField = advertForm.querySelector('#capacity');
 const guestsFields = guestsField.querySelectorAll('option');
 const typesField = advertForm.querySelector('#type');
 const priceField = advertForm.querySelector('#price');
+const timeinField = advertForm.querySelector('#timein');
+const timeinFields = timeinField.querySelectorAll('option');
+const timeoutField = advertForm.querySelector('#timeout');
+const timeoutFields = timeoutField.querySelectorAll('option');
 
 const deactivateAdvertForm = () => {
   advertForm.classList.add('ad-form--disabled');
@@ -64,6 +68,15 @@ const validateAdvertForm = () => {
     pristine.validate(priceField);
   };
 
+  const onTimeinChange = () => {
+    const fieldSelected = timeinField.value;
+    Array.from(timeoutFields).find((option)=>option.value === fieldSelected).selected = true;
+  };
+
+  const onTimeoutChange = () => {
+    const fieldSelected = timeoutField.value;
+    Array.from(timeinFields).find((option)=>option.value === fieldSelected).selected = true;
+  };
 
   const getRoomsErrorMessage = () => {
     const guestsText = Array.from(guestsFields).find((option)=>option.value === guestsField.value).textContent;
@@ -79,6 +92,8 @@ const validateAdvertForm = () => {
   roomsField.addEventListener('change', onRoomsChange);
   guestsField.addEventListener('change', onRoomsChange);
   typesField.addEventListener('change', onTypesChange);
+  timeinField.addEventListener('change', onTimeinChange);
+  timeoutField.addEventListener('change', onTimeoutChange);
 
   pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
   pristine.addValidator(guestsField, validateRooms);
