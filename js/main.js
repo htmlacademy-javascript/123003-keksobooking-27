@@ -1,16 +1,7 @@
-import { renderCards } from './map.js';
-import { createSimilarAdverts } from './data.js';
-import {deactivateAdvertForm, activateAdvertForm, validateAdvertForm} from './form.js';
-import {deactivateFilterForm, activateFilterForm} from './filter.js';
+import './map.js';
+import { validateAdvertForm } from './form.js';
+import './slider.js';
 
-const adverts = createSimilarAdverts();
-
-renderCards(adverts);
-
-deactivateAdvertForm();
-activateAdvertForm();
-deactivateFilterForm();
-activateFilterForm();
 validateAdvertForm();
 
 

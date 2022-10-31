@@ -82,7 +82,6 @@ const createCard = (advert) => {
   createCardPhotosList(card, photos);
 
   return card;
-
 };
 
 export {createCard};
