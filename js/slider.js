@@ -22,7 +22,7 @@ noUiSlider.create(sliderElement, {
   },
 });
 
-sliderElement.noUiSlider.on('update', (...rest) => {
+sliderElement.noUiSlider.on('update', () => {
   priceField.value = sliderElement.noUiSlider.get();
 });
 
