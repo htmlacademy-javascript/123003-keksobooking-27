@@ -1,5 +1,7 @@
 const filterForm = document.querySelector('.map__filters');
 const filterFields = filterForm.querySelectorAll('.map__filter,.map__features');
+const filterSelects = filterForm.querySelectorAll('select');
+const filterCheckboxes = filterForm.querySelectorAll('input[type="checkbox"]');
 
 const deactivateFilterForm = () => {
   filterForm.classList.add('map__filters--disabled');
@@ -15,4 +17,13 @@ const activateFilterForm = () => {
   });
 };
 
-export {deactivateFilterForm, activateFilterForm};
+const resetFilterForm = () => {
+  filterSelects.forEach((select) => {
+    select.querySelector('option:first-child').selected = true;
+  });
+  filterCheckboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+};
+
+export {deactivateFilterForm, activateFilterForm ,resetFilterForm};

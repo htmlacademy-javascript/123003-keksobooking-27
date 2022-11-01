@@ -111,4 +111,4 @@ const validateAdvertForm = () => {
   });
 };
 
-export { deactivateAdvertForm, activateAdvertForm, validateAdvertForm };
+export { deactivateAdvertForm, activateAdvertForm, validateAdvertForm};
