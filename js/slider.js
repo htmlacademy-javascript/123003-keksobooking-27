@@ -1,20 +1,12 @@
-const slider = document.querySelector('.ad-form__slider');
-const priceField = document.querySelector('.ad-form #price');
-const typesField = document.querySelector('.ad-form #type');
-const resetButton = document.querySelector('.ad-form__reset');
-const pricesToTypes = {
-  'bungalow': 0,
-  'flat': 1000,
-  'hotel': 3000,
-  'house': 5000,
-  'palace': 10000
-};
 const INITIAL_MIN_PRICE = 0;
 const INITIAL_MAX_PRICE = 100000;
+const slider = document.querySelector('.ad-form__slider');
+const priceField = document.querySelector('.ad-form #price');
+const resetButton = document.querySelector('.ad-form__reset');
 
-priceField.value = pricesToTypes[typesField.value];
+priceField.value = INITIAL_MIN_PRICE;
 
-const createSlider = () => {
+const initSlider = () => {
   noUiSlider.create(slider, {
     range: {
       min: INITIAL_MIN_PRICE,
@@ -24,29 +16,20 @@ const createSlider = () => {
     step: 1,
     connect: 'lower',
     format: {
-      to: function (value) {
+      to(value) {
         return parseInt(value, 10);
       },
-      from: function (value) {
+      from(value) {
         return parseFloat(value);
       },
     },
   });
-};
-
-const updateSlider = () => {
-  slider.noUiSlider.updateOptions({
-    range: {
-      min: pricesToTypes[typesField.value],
-      max: INITIAL_MAX_PRICE,
-    },
-    start: pricesToTypes[typesField.value],
+  slider.noUiSlider.on('update', () => {
+    priceField.value = slider.noUiSlider.get();
   });
 };
 
-typesField.addEventListener('change', updateSlider);
-
-resetButton.addEventListener('click', ()=>{
+const onFormReset = () => {
   slider.noUiSlider.updateOptions({
     range: {
       min: INITIAL_MIN_PRICE,
@@ -54,10 +37,8 @@ resetButton.addEventListener('click', ()=>{
     },
     start: INITIAL_MIN_PRICE,
   });
-});
+};
 
-createSlider();
+resetButton.addEventListener('click', onFormReset);
 
-slider.noUiSlider.on('update', () => {
-  priceField.value = slider.noUiSlider.get();
-});
+export { initSlider, slider };

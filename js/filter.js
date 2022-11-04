@@ -19,10 +19,17 @@ const activateFilterForm = () => {
 
 const resetFilterForm = () => {
   filterSelects.forEach((select) => {
-    select.querySelector('option:first-child').selected = true;
+    const filterOptions = select.querySelectorAll('option');
+    filterOptions.forEach((option) => {
+      if(option.selected === true){
+        option.selected = false;
+      }
+    });
   });
   filterCheckboxes.forEach((checkbox) => {
-    checkbox.checked = false;
+    if(checkbox.checked === true){
+      checkbox.checked = false;
+    }
   });
 };
 

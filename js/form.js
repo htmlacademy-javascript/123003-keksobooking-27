@@ -1,3 +1,4 @@
+import { slider } from './slider.js';
 const advertForm = document.querySelector('.ad-form');
 const advertFields = advertForm.querySelectorAll('fieldset');
 const priceSlider = advertForm.querySelector('.ad-form__slider');
@@ -18,6 +19,8 @@ const deactivateAdvertForm = () => {
     field.disabled = true;
   });
   priceSlider.classList.add('ad-form__slider--disabled');
+  /* подобная блокировка слайдера взята из документации библиотеки noUiSlider */
+  slider.setAttribute('disabled', true);
 };
 
 const activateAdvertForm = () => {
@@ -26,6 +29,7 @@ const activateAdvertForm = () => {
     field.disabled = false;
   });
   priceSlider.classList.remove('ad-form__slider--disabled');
+  slider.removeAttribute('disabled');
 };
 
 const validateAdvertForm = () => {
@@ -64,7 +68,6 @@ const validateAdvertForm = () => {
   const onTypesChange = () => {
     const value = pricesToTypes[typesField.value];
     priceField.min = value;
-    priceField.placeholder = value;
     pristine.validate(priceField);
   };
 
@@ -111,4 +114,4 @@ const validateAdvertForm = () => {
   });
 };
 
-export { deactivateAdvertForm, activateAdvertForm, validateAdvertForm};
+export { deactivateAdvertForm, activateAdvertForm, validateAdvertForm };
