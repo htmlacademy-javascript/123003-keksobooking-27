@@ -21,13 +21,13 @@ const resetFilterForm = () => {
   filterSelects.forEach((select) => {
     const filterOptions = select.querySelectorAll('option');
     filterOptions.forEach((option) => {
-      if(option.selected === true){
+      if(option.selected){
         option.selected = false;
       }
     });
   });
   filterCheckboxes.forEach((checkbox) => {
-    if(checkbox.checked === true){
+    if(checkbox.checked){
       checkbox.checked = false;
     }
   });

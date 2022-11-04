@@ -1,6 +1,6 @@
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-const typesEnToRu = {
+const typeEnToRu = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
@@ -67,7 +67,7 @@ const createCard = (advert) => {
   card.querySelector('.popup__title').textContent = title;
   card.querySelector('.popup__text--address').textContent = address;
   card.querySelector('[data-price]').textContent = price;
-  card.querySelector('.popup__type').textContent = typesEnToRu[type];
+  card.querySelector('.popup__type').textContent = typeEnToRu[type];
   card.querySelector('.popup__text--capacity').textContent = `${rooms} комнаты для ${guests} гостей`;
   card.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
   if(description === ''){

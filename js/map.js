@@ -15,6 +15,7 @@ const INITIAL_COORDINATE = {
   lat: 35.63714,
   lng: 139.79765,
 };
+const INITIAL_SCALE = 12;
 const mapContainer = document.querySelector('#map-canvas');
 const resetButton = document.querySelector('.ad-form__reset');
 const addressField = document.querySelector('#address');
@@ -36,7 +37,7 @@ const setOnMapLoad = (cb) => {
 };
 
 const initMap = ((coordinate) => {
-  map.setView(coordinate, 12);
+  map.setView(coordinate, INITIAL_SCALE);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -71,12 +72,12 @@ const createMapAdverts = (adverts) => {
   });
 };
 
-const onFormReset = () => {
+const onResetButtonClick = () => {
   mainPinMarker.setLatLng(INITIAL_COORDINATE);
-  map.setView(INITIAL_COORDINATE, 12);
+  map.setView(INITIAL_COORDINATE, INITIAL_SCALE);
   map.closePopup();
   resetFilterForm();
 };
-resetButton.addEventListener('click', onFormReset);
+resetButton.addEventListener('click', onResetButtonClick);
 
 export { initMap, createMapAdverts, INITIAL_COORDINATE, setOnMapLoad };

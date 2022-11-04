@@ -1,7 +1,6 @@
-import { slider } from './slider.js';
+import { activateSlider, deactivateSlider } from './slider.js';
 const advertForm = document.querySelector('.ad-form');
 const advertFields = advertForm.querySelectorAll('fieldset');
-const priceSlider = advertForm.querySelector('.ad-form__slider');
 const roomsField = advertForm.querySelector('#room_number');
 const roomsFields = roomsField.querySelectorAll('option');
 const guestsField = advertForm.querySelector('#capacity');
@@ -13,14 +12,27 @@ const timeinFields = timeinField.querySelectorAll('option');
 const timeoutField = advertForm.querySelector('#timeout');
 const timeoutFields = timeoutField.querySelectorAll('option');
 
+const guestsToRooms = {
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+  '100': ['0'],
+};
+
+const pricesToTypes = {
+  'bungalow': 0,
+  'flat': 1000,
+  'hotel': 3000,
+  'house': 5000,
+  'palace': 10000
+};
+
 const deactivateAdvertForm = () => {
   advertForm.classList.add('ad-form--disabled');
   advertFields.forEach((field) => {
     field.disabled = true;
   });
-  priceSlider.classList.add('ad-form__slider--disabled');
-  /* подобная блокировка слайдера взята из документации библиотеки noUiSlider */
-  slider.setAttribute('disabled', true);
+  deactivateSlider();
 };
 
 const activateAdvertForm = () => {
@@ -28,8 +40,7 @@ const activateAdvertForm = () => {
   advertFields.forEach((field) => {
     field.disabled = false;
   });
-  priceSlider.classList.remove('ad-form__slider--disabled');
-  slider.removeAttribute('disabled');
+  activateSlider();
 };
 
 const validateAdvertForm = () => {
@@ -41,21 +52,6 @@ const validateAdvertForm = () => {
     errorTextTag: 'span',
     errorTextClass: 'ad-form__error'
   });
-
-  const guestsToRooms = {
-    '1': ['1'],
-    '2': ['1', '2'],
-    '3': ['1', '2', '3'],
-    '100': ['0'],
-  };
-
-  const pricesToTypes = {
-    'bungalow': 0,
-    'flat': 1000,
-    'hotel': 3000,
-    'house': 5000,
-    'palace': 10000
-  };
 
   const validateRooms = () => guestsToRooms[roomsField.value].includes(guestsField.value);
 

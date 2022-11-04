@@ -29,7 +29,18 @@ const initSlider = () => {
   });
 };
 
-const onFormReset = () => {
+const deactivateSlider = () => {
+  slider.classList.add('ad-form__slider--disabled');
+  /* подобная блокировка слайдера взята из документации библиотеки noUiSlider */
+  slider.setAttribute('disabled', true);
+};
+
+const activateSlider = () => {
+  slider.classList.remove('ad-form__slider--disabled');
+  slider.removeAttribute('disabled');
+};
+
+const onResetButtonClick = () => {
   slider.noUiSlider.updateOptions({
     range: {
       min: INITIAL_MIN_PRICE,
@@ -39,6 +50,6 @@ const onFormReset = () => {
   });
 };
 
-resetButton.addEventListener('click', onFormReset);
+resetButton.addEventListener('click', onResetButtonClick);
 
-export { initSlider, slider };
+export { initSlider, deactivateSlider, activateSlider };
