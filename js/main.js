@@ -1,16 +1,20 @@
-import { renderCards } from './map.js';
+import { validateAdvertForm } from './form.js';
+import { initSlider } from './slider.js';
+import { activateAdvertForm, deactivateAdvertForm } from './form.js';
+import { activateFilterForm, deactivateFilterForm } from './filter.js';
+import { initMap, createMapAdverts, INITIAL_COORDINATE, setOnMapLoad } from './map.js';
 import { createSimilarAdverts } from './data.js';
-import {deactivateAdvertForm, activateAdvertForm, validateAdvertForm} from './form.js';
-import {deactivateFilterForm, activateFilterForm} from './filter.js';
 
 const adverts = createSimilarAdverts();
-
-renderCards(adverts);
-
-deactivateAdvertForm();
-activateAdvertForm();
-deactivateFilterForm();
-activateFilterForm();
 validateAdvertForm();
 
+setOnMapLoad(()=>{
+  createMapAdverts(adverts);
+  activateAdvertForm();
+  activateFilterForm();
+  initSlider();
+});
 
+deactivateAdvertForm();
+deactivateFilterForm();
+initMap(INITIAL_COORDINATE);
