@@ -1,8 +1,8 @@
+import { pristine } from './form.js';
 const INITIAL_MIN_PRICE = 0;
 const INITIAL_MAX_PRICE = 100000;
 const slider = document.querySelector('.ad-form__slider');
 const priceField = document.querySelector('.ad-form #price');
-const resetButton = document.querySelector('.ad-form__reset');
 
 priceField.value = INITIAL_MIN_PRICE;
 
@@ -24,10 +24,13 @@ const initSlider = () => {
       },
     },
   });
+
   slider.noUiSlider.on('update', () => {
     priceField.value = slider.noUiSlider.get();
+    pristine.validate(priceField);
   });
 };
+
 
 const deactivateSlider = () => {
   slider.classList.add('ad-form__slider--disabled');
@@ -40,7 +43,7 @@ const activateSlider = () => {
   slider.removeAttribute('disabled');
 };
 
-const onResetButtonClick = () => {
+const resetSlider = () => {
   slider.noUiSlider.updateOptions({
     range: {
       min: INITIAL_MIN_PRICE,
@@ -50,6 +53,5 @@ const onResetButtonClick = () => {
   });
 };
 
-resetButton.addEventListener('click', onResetButtonClick);
 
-export { initSlider, deactivateSlider, activateSlider };
+export { initSlider, deactivateSlider, activateSlider, resetSlider };

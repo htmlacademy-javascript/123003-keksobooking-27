@@ -1,4 +1,7 @@
-import { activateSlider, deactivateSlider } from './slider.js';
+import { activateSlider, deactivateSlider, resetSlider } from './slider.js';
+import { showErrorMessage } from './message.js';
+import { sendData } from './send-form.js';
+
 const advertForm = document.querySelector('.ad-form');
 const advertFields = advertForm.querySelectorAll('fieldset');
 const roomsField = advertForm.querySelector('#room_number');
@@ -11,6 +14,7 @@ const timeinField = advertForm.querySelector('#timein');
 const timeinFields = timeinField.querySelectorAll('option');
 const timeoutField = advertForm.querySelector('#timeout');
 const timeoutFields = timeoutField.querySelectorAll('option');
+const submitButton = advertForm.querySelector('.ad-form__submit');
 
 const guestsToRooms = {
   '1': ['1'],
@@ -43,71 +47,96 @@ const activateAdvertForm = () => {
   activateSlider();
 };
 
-const validateAdvertForm = () => {
-  const pristine = new Pristine(advertForm, {
-    classTo: 'ad-form__element',
-    errorClass: 'ad-form__element--invalid',
-    successClass: 'ad-form__element--valid',
-    errorTextParent: 'ad-form__element',
-    errorTextTag: 'span',
-    errorTextClass: 'ad-form__error'
-  });
+const resetAdvertForm = () => {
+  advertForm.reset();
+  resetSlider();
+};
 
-  const validateRooms = () => guestsToRooms[roomsField.value].includes(guestsField.value);
+const pristine = new Pristine(advertForm, {
+  classTo: 'ad-form__element',
+  errorClass: 'ad-form__element--invalid',
+  successClass: 'ad-form__element--valid',
+  errorTextParent: 'ad-form__element',
+  errorTextTag: 'span',
+  errorTextClass: 'ad-form__error'
+});
 
-  const validateMinPrice = (value) => value >= pricesToTypes[typesField.value];
+const validateRooms = () => guestsToRooms[roomsField.value].includes(guestsField.value);
 
-  const onRoomsChange = () => {
-    pristine.validate(roomsField);
-  };
+const validateMinPrice = (value) => value >= pricesToTypes[typesField.value];
 
-  const onTypesChange = () => {
-    const value = pricesToTypes[typesField.value];
-    priceField.min = value;
-    pristine.validate(priceField);
-  };
+const onRoomsChange = () => {
+  pristine.validate(roomsField);
+};
 
-  const onTimeinChange = () => {
-    const fieldSelected = timeinField.value;
-    Array.from(timeoutFields).find((option)=>option.value === fieldSelected).selected = true;
-  };
+const onTypesChange = () => {
+  const value = pricesToTypes[typesField.value];
+  priceField.min = value;
+  pristine.validate(priceField);
+};
 
-  const onTimeoutChange = () => {
-    const fieldSelected = timeoutField.value;
-    Array.from(timeinFields).find((option)=>option.value === fieldSelected).selected = true;
-  };
+const onTimeinChange = () => {
+  const fieldSelected = timeinField.value;
+  Array.from(timeoutFields).find((option)=>option.value === fieldSelected).selected = true;
+};
 
-  const getRoomsErrorMessage = () => {
-    const guestsText = Array.from(guestsFields).find((option)=>option.value === guestsField.value).textContent;
-    let roomsText = Array.from(roomsFields).find((option)=>option.value === roomsField.value).textContent;
-    if(roomsText === '1 комната'){
-      roomsText = '1 комнату';
-    }
-    return `Невозможно забронировать ${roomsText} ${guestsText}`;
-  };
+const onTimeoutChange = () => {
+  const fieldSelected = timeoutField.value;
+  Array.from(timeinFields).find((option)=>option.value === fieldSelected).selected = true;
+};
 
-  const getMinPriceErrorMessage = () => `Минимальное значение -  ${pricesToTypes[typesField.value]}`;
+const getRoomsErrorMessage = () => {
+  const guestsText = Array.from(guestsFields).find((option)=>option.value === guestsField.value).textContent;
+  let roomsText = Array.from(roomsFields).find((option)=>option.value === roomsField.value).textContent;
+  if(roomsText === '1 комната'){
+    roomsText = '1 комнату';
+  }
+  return `Невозможно забронировать ${roomsText} ${guestsText}`;
+};
 
-  roomsField.addEventListener('change', onRoomsChange);
-  guestsField.addEventListener('change', onRoomsChange);
-  typesField.addEventListener('change', onTypesChange);
-  timeinField.addEventListener('change', onTimeinChange);
-  timeoutField.addEventListener('change', onTimeoutChange);
+const getMinPriceErrorMessage = () => `Минимальное значение -  ${pricesToTypes[typesField.value]}`;
 
-  pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
-  pristine.addValidator(guestsField, validateRooms);
-  pristine.addValidator(priceField, validateMinPrice, getMinPriceErrorMessage);
+roomsField.addEventListener('change', onRoomsChange);
+guestsField.addEventListener('change', onRoomsChange);
+typesField.addEventListener('change', onTypesChange);
+timeinField.addEventListener('change', onTimeinChange);
+timeoutField.addEventListener('change', onTimeoutChange);
 
+pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
+pristine.addValidator(guestsField, validateRooms);
+pristine.addValidator(priceField, validateMinPrice, getMinPriceErrorMessage);
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const setAdvertFormSubmit = (onSuccess) => {
   advertForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
+
     const isValid = pristine.validate();
     if(isValid){
-      //console.log('Можно отправлять');
-    }
-    else{
-      //console.log(pristine.getErrors());
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          unblockSubmitButton();
+        },
+        () => {
+          showErrorMessage();
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
     }
   });
 };
 
-export { deactivateAdvertForm, activateAdvertForm, validateAdvertForm };
+
+export { deactivateAdvertForm, activateAdvertForm, setAdvertFormSubmit, resetAdvertForm, pristine };

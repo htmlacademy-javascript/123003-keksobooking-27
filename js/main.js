@@ -1,20 +1,33 @@
-import { validateAdvertForm } from './form.js';
-import { initSlider } from './slider.js';
-import { activateAdvertForm, deactivateAdvertForm } from './form.js';
-import { activateFilterForm, deactivateFilterForm } from './filter.js';
-import { initMap, createMapAdverts, INITIAL_COORDINATE, setOnMapLoad } from './map.js';
-import { createSimilarAdverts } from './data.js';
+import { setAdvertFormSubmit } from './form.js';
+import { initSlider, resetSlider } from './slider.js';
+import { activateAdvertForm, deactivateAdvertForm, resetAdvertForm } from './form.js';
+import { activateFilterForm, deactivateFilterForm, resetFilterForm } from './filter.js';
+import { initMap, createMapAdverts, INITIAL_COORDINATE, setOnMapLoad, resetMap } from './map.js';
+import { showSuccessMessage } from './message.js';
+import { getData } from './send-form.js';
 
-const adverts = createSimilarAdverts();
-validateAdvertForm();
+const NEARBY_ADVERTS_COUNT = 10;
 
-setOnMapLoad(()=>{
-  createMapAdverts(adverts);
+setOnMapLoad(() => {
   activateAdvertForm();
   activateFilterForm();
   initSlider();
 });
 
+const onFormSend = () => {
+  resetSlider();
+  resetAdvertForm();
+  resetFilterForm();
+  resetMap();
+  showSuccessMessage();
+};
+
 deactivateAdvertForm();
 deactivateFilterForm();
 initMap(INITIAL_COORDINATE);
+
+getData((adverts) => {
+  createMapAdverts(adverts.slice(0, NEARBY_ADVERTS_COUNT));
+});
+
+setAdvertFormSubmit(onFormSend);

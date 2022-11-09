@@ -1,7 +1,6 @@
 const filterForm = document.querySelector('.map__filters');
 const filterFields = filterForm.querySelectorAll('.map__filter,.map__features');
-const filterSelects = filterForm.querySelectorAll('select');
-const filterCheckboxes = filterForm.querySelectorAll('input[type="checkbox"]');
+const resetButton = document.querySelector('.ad-form__reset');
 
 const deactivateFilterForm = () => {
   filterForm.classList.add('map__filters--disabled');
@@ -18,19 +17,9 @@ const activateFilterForm = () => {
 };
 
 const resetFilterForm = () => {
-  filterSelects.forEach((select) => {
-    const filterOptions = select.querySelectorAll('option');
-    filterOptions.forEach((option) => {
-      if(option.selected){
-        option.selected = false;
-      }
-    });
-  });
-  filterCheckboxes.forEach((checkbox) => {
-    if(checkbox.checked){
-      checkbox.checked = false;
-    }
-  });
+  filterForm.reset();
 };
+
+resetButton.addEventListener('click', resetFilterForm);
 
 export {deactivateFilterForm, activateFilterForm ,resetFilterForm};

@@ -1,5 +1,4 @@
 import { createCard } from './create-card.js';
-import { resetFilterForm } from './filter.js';
 
 const MAIN_PIN_ICON = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -72,12 +71,11 @@ const createMapAdverts = (adverts) => {
   });
 };
 
-const onResetButtonClick = () => {
+const resetMap = () => {
   mainPinMarker.setLatLng(INITIAL_COORDINATE);
   map.setView(INITIAL_COORDINATE, INITIAL_SCALE);
   map.closePopup();
-  resetFilterForm();
 };
-resetButton.addEventListener('click', onResetButtonClick);
+resetButton.addEventListener('click', resetMap);
 
-export { initMap, createMapAdverts, INITIAL_COORDINATE, setOnMapLoad };
+export { initMap, createMapAdverts, INITIAL_COORDINATE, setOnMapLoad, resetMap };
