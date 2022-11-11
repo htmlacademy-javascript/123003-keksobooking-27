@@ -3,9 +3,10 @@ const slider = document.querySelector('.ad-form__slider');
 const initSlider = ({ onUpdate, ...options }) => {
   noUiSlider.create(slider, {
     connect: 'lower',
+    step: 1,
     format: {
       to(value) {
-        return parseInt(value, 10);
+        return Math.floor(value);
       },
       from(value) {
         return parseFloat(value);
@@ -16,7 +17,7 @@ const initSlider = ({ onUpdate, ...options }) => {
 
   slider.noUiSlider.on('update', () => {
     const volume = slider.noUiSlider.get(true);
-    onUpdate?.(volume);
+    onUpdate?.(Math.floor(volume));
   });
 };
 
@@ -31,8 +32,8 @@ const activateSlider = () => {
   slider.removeAttribute('disabled');
 };
 
-const resetSlider = (options) => {
-  slider.noUiSlider.updateOptions(options);
+const resetSlider = () => {
+  slider.noUiSlider.reset();
 };
 
 

@@ -1,7 +1,7 @@
 import { isEscKey, removeElement } from './utils.js';
 
 const ALERT_MESSAGE_TIMEOUT = 2000;
-const body = document.querySelector('body');
+const body = document.body;
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 
@@ -31,7 +31,7 @@ const showSuccessMessage = () => {
 const showErrorMessage = () => {
   const errorMessage = errorMessageTemplate.cloneNode(true);
   body.appendChild(errorMessage);
-  document.querySelector('.error__button').addEventListener('click', onErrorButtonClick);
+  errorMessage.querySelector('.error__button').addEventListener('click', onErrorButtonClick);
   document.addEventListener('keydown', onEscKeydown);
   body.style.overflow = 'hidden';
 };

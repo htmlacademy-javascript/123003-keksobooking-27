@@ -12,14 +12,12 @@ const getData = (onSuccess, onFail) => {
     });
 };
 
-const sendData = (body) => {
-  fetch(
-    RequestUrl.POST,
-    {
-      method: 'POST',
-      body,
-    },
-  );
-};
+const sendData = (body) => fetch(
+  RequestUrl.POST,
+  {
+    method: 'POST',
+    body,
+  },
+);
 
 export { getData, sendData };

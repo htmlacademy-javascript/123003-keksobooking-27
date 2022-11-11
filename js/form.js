@@ -37,12 +37,12 @@ const pricesToTypes = {
   'palace': 10000
 };
 
-const inicialSliderOptions = {
+const INITIAL_SLIDER_OPTIONS = {
   start: InitialPrice.MIN,
   range: {
     min: InitialPrice.MIN,
     max: InitialPrice.MAX,
-  },
+  }
 };
 
 const deactivateAdvertForm = () => {
@@ -59,7 +59,7 @@ const activateAdvertForm = () => {
 
 const resetAdvertForm = () => {
   advertForm.reset();
-  resetSlider(inicialSliderOptions);
+  resetSlider();
 };
 
 const pristine = new Pristine(advertForm, {
@@ -124,9 +124,9 @@ pristine.addValidator(priceField, validateMinPrice, getMinPriceErrorMessage);
 priceField.value = InitialPrice.MIN;
 
 initSlider({
-  ...inicialSliderOptions,
+  ...INITIAL_SLIDER_OPTIONS,
   onUpdate: (volume) => {
-    priceField.value = parseInt(volume, 10);
+    priceField.value = volume;
     pristine.validate(priceField);
   }
 });
