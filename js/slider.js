@@ -1,31 +1,23 @@
-const INITIAL_MIN_PRICE = 0;
-const INITIAL_MAX_PRICE = 100000;
 const slider = document.querySelector('.ad-form__slider');
-const priceField = document.querySelector('.ad-form #price');
-const resetButton = document.querySelector('.ad-form__reset');
 
-priceField.value = INITIAL_MIN_PRICE;
-
-const initSlider = () => {
+const initSlider = ({ onUpdate, ...options }) => {
   noUiSlider.create(slider, {
-    range: {
-      min: INITIAL_MIN_PRICE,
-      max: INITIAL_MAX_PRICE,
-    },
-    start: INITIAL_MIN_PRICE,
-    step: 1,
     connect: 'lower',
+    step: 1,
     format: {
       to(value) {
-        return parseInt(value, 10);
+        return Math.floor(value);
       },
       from(value) {
         return parseFloat(value);
       },
     },
+    ...options,
   });
+
   slider.noUiSlider.on('update', () => {
-    priceField.value = slider.noUiSlider.get();
+    const volume = slider.noUiSlider.get(true);
+    onUpdate?.(Math.floor(volume));
   });
 };
 
@@ -40,16 +32,9 @@ const activateSlider = () => {
   slider.removeAttribute('disabled');
 };
 
-const onResetButtonClick = () => {
-  slider.noUiSlider.updateOptions({
-    range: {
-      min: INITIAL_MIN_PRICE,
-      max: INITIAL_MAX_PRICE,
-    },
-    start: INITIAL_MIN_PRICE,
-  });
+const resetSlider = () => {
+  slider.noUiSlider.reset();
 };
 
-resetButton.addEventListener('click', onResetButtonClick);
 
-export { initSlider, deactivateSlider, activateSlider };
+export { initSlider, deactivateSlider, activateSlider, resetSlider };
