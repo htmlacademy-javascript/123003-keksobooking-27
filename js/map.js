@@ -16,7 +16,6 @@ const INITIAL_COORDINATE = {
 };
 const INITIAL_SCALE = 12;
 const mapContainer = document.querySelector('#map-canvas');
-const resetButton = document.querySelector('.ad-form__reset');
 const addressField = document.querySelector('#address');
 const map = L.map(mapContainer);
 
@@ -76,6 +75,5 @@ const resetMap = () => {
   map.setView(INITIAL_COORDINATE, INITIAL_SCALE);
   map.closePopup();
 };
-resetButton.addEventListener('click', resetMap);
 
 export { initMap, createMapAdverts, INITIAL_COORDINATE, setOnMapLoad, resetMap };

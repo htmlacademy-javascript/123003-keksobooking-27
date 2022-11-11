@@ -1,6 +1,7 @@
-import { activateSlider, deactivateSlider, resetSlider } from './slider.js';
+import { activateSlider, deactivateSlider, resetSlider, initSlider } from './slider.js';
 import { showErrorMessage } from './message.js';
-import { sendData } from './send-form.js';
+import { sendData } from './network.js';
+import { setDisabled, unsetDisabled } from './utils.js';
 
 const advertForm = document.querySelector('.ad-form');
 const advertFields = advertForm.querySelectorAll('fieldset');
@@ -15,6 +16,11 @@ const timeinFields = timeinField.querySelectorAll('option');
 const timeoutField = advertForm.querySelector('#timeout');
 const timeoutFields = timeoutField.querySelectorAll('option');
 const submitButton = advertForm.querySelector('.ad-form__submit');
+
+const InitialPrice = {
+  MIN: 0,
+  MAX: 100000,
+};
 
 const guestsToRooms = {
   '1': ['1'],
@@ -31,25 +37,29 @@ const pricesToTypes = {
   'palace': 10000
 };
 
+const inicialSliderOptions = {
+  start: InitialPrice.MIN,
+  range: {
+    min: InitialPrice.MIN,
+    max: InitialPrice.MAX,
+  },
+};
+
 const deactivateAdvertForm = () => {
   advertForm.classList.add('ad-form--disabled');
-  advertFields.forEach((field) => {
-    field.disabled = true;
-  });
+  advertFields.forEach(setDisabled);
   deactivateSlider();
 };
 
 const activateAdvertForm = () => {
   advertForm.classList.remove('ad-form--disabled');
-  advertFields.forEach((field) => {
-    field.disabled = false;
-  });
+  advertFields.forEach(unsetDisabled);
   activateSlider();
 };
 
 const resetAdvertForm = () => {
   advertForm.reset();
-  resetSlider();
+  resetSlider(inicialSliderOptions);
 };
 
 const pristine = new Pristine(advertForm, {
@@ -85,6 +95,10 @@ const onTimeoutChange = () => {
   Array.from(timeinFields).find((option)=>option.value === fieldSelected).selected = true;
 };
 
+const onPriceInput = () => {
+  priceField.value = priceField.value.replace(/\./g, '');
+};
+
 const getRoomsErrorMessage = () => {
   const guestsText = Array.from(guestsFields).find((option)=>option.value === guestsField.value).textContent;
   let roomsText = Array.from(roomsFields).find((option)=>option.value === roomsField.value).textContent;
@@ -101,10 +115,31 @@ guestsField.addEventListener('change', onRoomsChange);
 typesField.addEventListener('change', onTypesChange);
 timeinField.addEventListener('change', onTimeinChange);
 timeoutField.addEventListener('change', onTimeoutChange);
+priceField.addEventListener('input', onPriceInput);
 
 pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
 pristine.addValidator(guestsField, validateRooms);
 pristine.addValidator(priceField, validateMinPrice, getMinPriceErrorMessage);
+
+priceField.value = InitialPrice.MIN;
+
+initSlider({
+  ...inicialSliderOptions,
+  onUpdate: (volume) => {
+    priceField.value = parseInt(volume, 10);
+    pristine.validate(priceField);
+  }
+});
+
+let handlerFormReset = null;
+
+const setAdvertFormResetHandler = (cb) => {
+  handlerFormReset = cb;
+};
+
+advertForm.addEventListener('reset', () => {
+  handlerFormReset?.();
+});
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -117,26 +152,28 @@ const unblockSubmitButton = () => {
 };
 
 const setAdvertFormSubmit = (onSuccess) => {
-  advertForm.addEventListener('submit', (evt) => {
+  advertForm.addEventListener('submit', async (evt) => {
     evt.preventDefault();
 
     const isValid = pristine.validate();
-    if(isValid){
+
+    if (isValid) {
       blockSubmitButton();
-      sendData(
-        () => {
+      try {
+        const response = await sendData(new FormData(evt.target));
+        if (response.ok) {
           onSuccess();
-          unblockSubmitButton();
-        },
-        () => {
+        } else {
           showErrorMessage();
-          unblockSubmitButton();
-        },
-        new FormData(evt.target),
-      );
+        }
+      } catch (err) {
+        showErrorMessage();
+      } finally {
+        unblockSubmitButton();
+      }
     }
   });
 };
 
 
-export { deactivateAdvertForm, activateAdvertForm, setAdvertFormSubmit, resetAdvertForm, pristine };
+export { deactivateAdvertForm, activateAdvertForm, setAdvertFormSubmit, resetAdvertForm, setAdvertFormResetHandler };

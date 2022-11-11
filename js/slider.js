@@ -1,19 +1,7 @@
-import { pristine } from './form.js';
-const INITIAL_MIN_PRICE = 0;
-const INITIAL_MAX_PRICE = 100000;
 const slider = document.querySelector('.ad-form__slider');
-const priceField = document.querySelector('.ad-form #price');
 
-priceField.value = INITIAL_MIN_PRICE;
-
-const initSlider = () => {
+const initSlider = ({ onUpdate, ...options }) => {
   noUiSlider.create(slider, {
-    range: {
-      min: INITIAL_MIN_PRICE,
-      max: INITIAL_MAX_PRICE,
-    },
-    start: INITIAL_MIN_PRICE,
-    step: 1,
     connect: 'lower',
     format: {
       to(value) {
@@ -23,14 +11,14 @@ const initSlider = () => {
         return parseFloat(value);
       },
     },
+    ...options,
   });
 
   slider.noUiSlider.on('update', () => {
-    priceField.value = slider.noUiSlider.get();
-    pristine.validate(priceField);
+    const volume = slider.noUiSlider.get(true);
+    onUpdate?.(volume);
   });
 };
-
 
 const deactivateSlider = () => {
   slider.classList.add('ad-form__slider--disabled');
@@ -43,14 +31,8 @@ const activateSlider = () => {
   slider.removeAttribute('disabled');
 };
 
-const resetSlider = () => {
-  slider.noUiSlider.updateOptions({
-    range: {
-      min: INITIAL_MIN_PRICE,
-      max: INITIAL_MAX_PRICE,
-    },
-    start: INITIAL_MIN_PRICE,
-  });
+const resetSlider = (options) => {
+  slider.noUiSlider.updateOptions(options);
 };
 
 

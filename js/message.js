@@ -1,15 +1,12 @@
+import { isEscKey, removeElement } from './utils.js';
+
+const ALERT_MESSAGE_TIMEOUT = 2000;
 const body = document.querySelector('body');
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 
-const isEscEvent = (evt) => {
-  if(evt.keyCode === 27){
-    return true;
-  }
-};
-
 const onEscKeydown = (evt) => {
-  if(isEscEvent(evt)){
+  if(isEscKey(evt)){
     evt.preventDefault();
     closeMessage();
   }
@@ -53,9 +50,7 @@ const showAlert = (message) => {
   alert.classList.add('alert');
   body.appendChild(alert);
 
-  setTimeout(() => {
-    alert.remove();
-  }, 2000);
+  setTimeout(removeElement, ALERT_MESSAGE_TIMEOUT, alert);
 };
 
 export { showSuccessMessage, showErrorMessage, showAlert };
