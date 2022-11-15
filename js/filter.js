@@ -1,4 +1,4 @@
-import { setDisabled, unsetDisabled } from './utils.js';
+import { setDisabled, unsetDisabled, debounce } from './utils.js';
 
 const ADVERTS_COUNT = 10;
 const Price = {
@@ -99,7 +99,7 @@ const getFilteredAdverts = (adverts) => {
 
 const setOnFiltering = (cb) =>{
   filterFields.forEach((field)=>{
-    field.addEventListener('change', cb);
+    field.addEventListener('change', debounce(cb));
   });
 };
 
