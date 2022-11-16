@@ -53,6 +53,8 @@ const initMap = ((coordinate) => {
   });
 });
 
+const markerGroup = L.layerGroup().addTo(map);
+
 const createMapAdverts = (adverts) => {
   adverts.forEach((advert) => {
     const otherPinMarker = L.marker(
@@ -65,9 +67,14 @@ const createMapAdverts = (adverts) => {
       },
     );
     otherPinMarker
-      .addTo(map)
+      .addTo(markerGroup)
       .bindPopup(createCard(advert));
   });
+};
+
+const changeAdvertGroup = (adverts) => {
+  markerGroup.clearLayers();
+  createMapAdverts(adverts);
 };
 
 const resetMap = () => {
@@ -76,4 +83,4 @@ const resetMap = () => {
   map.closePopup();
 };
 
-export { initMap, createMapAdverts, INITIAL_COORDINATE, setOnMapLoad, resetMap };
+export { initMap, createMapAdverts, INITIAL_COORDINATE, setOnMapLoad, resetMap, changeAdvertGroup };
