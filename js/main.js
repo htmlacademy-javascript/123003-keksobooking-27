@@ -3,6 +3,7 @@ import { activateFilterForm, deactivateFilterForm, resetFilterForm, setOnFilter,
 import { initMap, createMapAdverts, INITIAL_COORDINATE, setOnMapLoad, resetMap, changeAdvertGroup } from './map.js';
 import { showSuccessMessage, showAlert } from './message.js';
 import { getData } from './network.js';
+import './photo.js';
 
 const initPage = () => {
   deactivateAdvertForm();

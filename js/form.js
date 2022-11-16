@@ -2,6 +2,7 @@ import { activateSlider, deactivateSlider, resetSlider, initSlider } from './sli
 import { showErrorMessage } from './message.js';
 import { sendData } from './network.js';
 import { setDisabled, unsetDisabled } from './utils.js';
+import { resetPhotos } from './photo.js';
 
 const advertForm = document.querySelector('.ad-form');
 const advertFields = advertForm.querySelectorAll('fieldset');
@@ -60,6 +61,7 @@ const activateAdvertForm = () => {
 const resetAdvertForm = () => {
   advertForm.reset();
   resetSlider();
+  resetPhotos();
 };
 
 const pristine = new Pristine(advertForm, {

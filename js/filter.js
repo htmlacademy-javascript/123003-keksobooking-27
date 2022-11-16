@@ -59,11 +59,12 @@ const checkFeatures = (advert, features) => {
   if(!advert.offer.features){
     return false;
   }
-  return features.every((feature)=> advert.offer.features.includes(feature.value));
+  features.every((feature)=> advert.offer.features.includes(feature.value));
 };
 
 const getFilteredAdverts = (adverts) => {
   const selectedFeatures = Array.from(filterForm.querySelectorAll('input:checked'));
+
   for(const advert of adverts){
     if(
       checkType(advert, selectedType.value) &&
