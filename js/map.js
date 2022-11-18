@@ -10,10 +10,6 @@ const OTHER_PIN_ICON = L.icon({
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
-const INITIAL_COORDINATE = {
-  lat: 35.63714,
-  lng: 139.79765,
-};
 const INITIAL_SCALE = 12;
 const mapContainer = document.querySelector('#map-canvas');
 const addressField = document.querySelector('#address');
@@ -77,10 +73,10 @@ const changeAdvertGroup = (adverts) => {
   createMapAdverts(adverts);
 };
 
-const resetMap = () => {
-  mainPinMarker.setLatLng(INITIAL_COORDINATE);
-  map.setView(INITIAL_COORDINATE, INITIAL_SCALE);
+const resetMap = (coordinate) => {
+  mainPinMarker.setLatLng(coordinate);
+  map.setView(coordinate, INITIAL_SCALE);
   map.closePopup();
 };
 
-export { initMap, createMapAdverts, INITIAL_COORDINATE, setOnMapLoad, resetMap, changeAdvertGroup };
+export { initMap, createMapAdverts, setOnMapLoad, resetMap, changeAdvertGroup };

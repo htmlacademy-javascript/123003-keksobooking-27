@@ -1,34 +1,51 @@
 import { setAdvertFormSubmit, activateAdvertForm, deactivateAdvertForm, resetAdvertForm, setAdvertFormResetHandler } from './form.js';
-import { activateFilterForm, deactivateFilterForm, resetFilterForm, setOnFilter, getFilteredAdverts, ADVERTS_COUNT } from './filter.js';
-import { initMap, createMapAdverts, INITIAL_COORDINATE, setOnMapLoad, resetMap, changeAdvertGroup } from './map.js';
+import { activateFilterForm, deactivateFilterForm, resetFilterForm, addOnFilter, getFilteredAdverts } from './filter.js';
+import { initMap, createMapAdverts, setOnMapLoad, resetMap, changeAdvertGroup } from './map.js';
 import { showSuccessMessage, showAlert } from './message.js';
 import { getData } from './network.js';
-import './photo.js';
+import { debounce } from './utils.js';
+
+const ADVERTS_COUNT = 10;
+const INITIAL_COORDINATE = {
+  lat: 35.63714,
+  lng: 139.79765,
+};
+
+let adverts = [];
 
 const initPage = () => {
   deactivateAdvertForm();
   deactivateFilterForm();
   initMap(INITIAL_COORDINATE);
+  getData((data) => {
+    if (data.length === 0) {
+      return;
+    }
+
+    adverts = data;
+    createMapAdverts(adverts.slice(0, ADVERTS_COUNT));
+
+    activateFilterForm();
+
+    const debounceFilterAdverts = debounce(() => {
+      changeAdvertGroup(getFilteredAdverts(adverts, ADVERTS_COUNT));
+    });
+
+    addOnFilter(debounceFilterAdverts);
+  }, showAlert);
 };
 
 const resetPage = () => {
   resetAdvertForm();
   resetFilterForm();
-  resetMap();
+  resetMap(INITIAL_COORDINATE);
+
+  createMapAdverts(adverts.slice(0, ADVERTS_COUNT));
 };
 
 setOnMapLoad(() => {
   activateAdvertForm();
 });
-
-getData((adverts) => {
-  createMapAdverts(adverts.slice(0, ADVERTS_COUNT));
-  activateFilterForm();
-  setOnFilter(()=>{
-    changeAdvertGroup(getFilteredAdverts(adverts));
-  });
-}, showAlert);
-
 
 setAdvertFormSubmit(() => {
   showSuccessMessage();

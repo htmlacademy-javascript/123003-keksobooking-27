@@ -89,12 +89,12 @@ const onTypesChange = () => {
 
 const onTimeinChange = () => {
   const fieldSelected = timeinField.value;
-  Array.from(timeoutFields).find((option)=>option.value === fieldSelected).selected = true;
+  Array.from(timeoutFields).find((option) => option.value === fieldSelected).selected = true;
 };
 
 const onTimeoutChange = () => {
   const fieldSelected = timeoutField.value;
-  Array.from(timeinFields).find((option)=>option.value === fieldSelected).selected = true;
+  Array.from(timeinFields).find((option) => option.value === fieldSelected).selected = true;
 };
 
 const onPriceInput = () => {
@@ -102,9 +102,9 @@ const onPriceInput = () => {
 };
 
 const getRoomsErrorMessage = () => {
-  const guestsText = Array.from(guestsFields).find((option)=>option.value === guestsField.value).textContent;
-  let roomsText = Array.from(roomsFields).find((option)=>option.value === roomsField.value).textContent;
-  if(roomsText === '1 комната'){
+  const guestsText = Array.from(guestsFields).find((option) => option.value === guestsField.value).textContent;
+  let roomsText = Array.from(roomsFields).find((option) => option.value === roomsField.value).textContent;
+  if (roomsText === '1 комната') {
     roomsText = '1 комнату';
   }
   return `Невозможно забронировать ${roomsText} ${guestsText}`;

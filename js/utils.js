@@ -12,9 +12,9 @@ const removeElement = (element) => {
 
 const isEscKey = (evt) => evt.key === 'Escape';
 
-const isValidImageType = (file, types)=> {
+const isValidImageType = (file, types) => {
   const fileName = file.name.toLowerCase();
-  const matches = types.some((it) => fileName.endsWith(it));
+  const matches = types.some((type) => fileName.endsWith(type));
   return matches;
 };
 
@@ -25,7 +25,7 @@ const debounce = (callback, timeoutDelay = 500) => {
 
   return (...rest) => {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+    timeoutId = setTimeout(callback, timeoutDelay, ...rest);
   };
 };
 
