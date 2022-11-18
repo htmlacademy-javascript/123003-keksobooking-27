@@ -1,6 +1,5 @@
-import { setDisabled, unsetDisabled, debounce } from './utils.js';
+import { setDisabled, unsetDisabled } from './utils.js';
 
-const ADVERTS_COUNT = 10;
 const PriceCategory = {
   MIDDLE: 'middle',
   LOW: 'low',
@@ -17,7 +16,6 @@ const selectedType = filterForm.querySelector('#housing-type');
 const selectedPrice = filterForm.querySelector('#housing-price');
 const selectedRooms = filterForm.querySelector('#housing-rooms');
 const selectedGuests = filterForm.querySelector('#housing-guests');
-const filteredAdverts = [];
 
 const deactivateFilterForm = () => {
   filterForm.classList.add('map__filters--disabled');
@@ -33,11 +31,11 @@ const resetFilterForm = () => {
   filterForm.reset();
 };
 
-const checkType = (advert, select) => !!(select === advert.offer.type || select === 'any');
+const checkType = (advert, select) => select === 'any' || select === advert.offer.type;
 
-const checkGuests = (advert, select) => !!((+select === advert.offer.guests || select === 'any'));
+const checkGuests = (advert, select) => select === 'any' || +select === advert.offer.guests;
 
-const checkRooms = (advert, select) => !!((+select === advert.offer.rooms || select === 'any'));
+const checkRooms = (advert, select) => select === 'any' || +select === advert.offer.rooms;
 
 const checkPrice = (advert, select) => {
   switch (select) {
@@ -52,27 +50,30 @@ const checkPrice = (advert, select) => {
   }
 };
 
-const checkFeatures = (advert, features) => {
-  if(!features.length){
+const checkFeatures = (advert, selectedFeatures) => {
+  const { features = [] } = advert.offer;
+  if (selectedFeatures.length === 0) {
     return true;
   }
-  if(!advert.offer.features){
+  if (features === 0) {
     return false;
   }
-  return features.every((feature)=> advert.offer.features.includes(feature.value));
+  return selectedFeatures.every((feature) => features.includes(feature.value));
 };
 
-const getFilteredAdverts = (adverts) => {
+const getFilteredAdverts = (adverts, max = adverts.length) => {
+  const filteredAdverts = [];
   const selectedFeatures = Array.from(filterForm.querySelectorAll('input:checked'));
-  for(const advert of adverts){
-    if(
+
+  for (const advert of adverts) {
+    if (
       checkType(advert, selectedType.value) &&
       checkGuests(advert, selectedGuests.value) &&
       checkRooms(advert, selectedRooms.value) &&
       checkPrice(advert, selectedPrice.value) &&
-      checkFeatures(advert, selectedFeatures)){
+      checkFeatures(advert, selectedFeatures)) {
       filteredAdverts.push(advert);
-      if(filteredAdverts.length === ADVERTS_COUNT){
+      if (filteredAdverts.length === max) {
         break;
       }
     }
@@ -81,9 +82,9 @@ const getFilteredAdverts = (adverts) => {
 };
 
 
-const setOnFilter = (cb) =>{
-  filterForm.addEventListener('change', debounce(cb));
+const addOnFilter = (cb) => {
+  filterForm.addEventListener('change', cb);
 };
 
 
-export {deactivateFilterForm, activateFilterForm, resetFilterForm, setOnFilter, getFilteredAdverts, ADVERTS_COUNT};
+export {deactivateFilterForm, activateFilterForm, resetFilterForm, addOnFilter, getFilteredAdverts};

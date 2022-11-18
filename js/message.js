@@ -6,7 +6,7 @@ const successMessageTemplate = document.querySelector('#success').content.queryS
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 
 const onEscKeydown = (evt) => {
-  if(isEscKey(evt)){
+  if (isEscKey(evt)) {
     evt.preventDefault();
     closeMessage();
   }

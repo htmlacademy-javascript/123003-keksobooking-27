@@ -11,14 +11,14 @@ const typeEnToRu = {
 const createCardFeaturesList = (card, features) => {
   const featuresContainer = card.querySelector('.popup__features');
 
-  if(features.length === 0) {
+  if (features.length === 0) {
     featuresContainer.remove();
     return;
   }
 
-  const modifiers = features.map((feature)=>`popup__feature--${ feature}`);
+  const modifiers = features.map((feature) => `popup__feature--${ feature}`);
 
-  featuresContainer.querySelectorAll('.popup__feature').forEach((feature)=>{
+  featuresContainer.querySelectorAll('.popup__feature').forEach((feature) => {
     const modifier = feature.classList[1];
     if (!modifiers.includes(modifier)) {
       feature.remove();
@@ -32,8 +32,8 @@ const createCardPhotosList = (card, photos) => {
 
   photoContainer.replaceChildren();
 
-  photos.forEach((photo)=>{
-    if(photos.length === 0) {
+  photos.forEach((photo) => {
+    if (photos.length === 0) {
       photoContainer.remove();
       return;
     }
@@ -70,10 +70,10 @@ const createCard = (advert) => {
   card.querySelector('.popup__type').textContent = typeEnToRu[type];
   card.querySelector('.popup__text--capacity').textContent = `${rooms} комнаты для ${guests} гостей`;
   card.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
-  if(description === ''){
+  if (description === '') {
     card.querySelector('.popup__description').remove();
   }
-  else{
+  else {
     card.querySelector('.popup__description').textContent = description;
   }
   card.querySelector('.popup__avatar').src = avatar;
@@ -84,4 +84,4 @@ const createCard = (advert) => {
   return card;
 };
 
-export {createCard};
+export { createCard };

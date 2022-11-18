@@ -7,7 +7,7 @@ const getData = (onSuccess, onFail) => {
   fetch(RequestUrl.GET)
     .then((response) => response.json())
     .then((data) => onSuccess(data))
-    .catch((error)=>{
+    .catch((error) => {
       onFail(error.message);
     });
 };

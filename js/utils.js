@@ -12,6 +12,12 @@ const removeElement = (element) => {
 
 const isEscKey = (evt) => evt.key === 'Escape';
 
+const isValidImageType = (file, types) => {
+  const fileName = file.name.toLowerCase();
+  const matches = types.some((type) => fileName.endsWith(type));
+  return matches;
+};
+
 // Функция взята из интернета и доработана
 // Источник - https://www.freecodecamp.org/news/javascript-debounce-example
 const debounce = (callback, timeoutDelay = 500) => {
@@ -19,8 +25,8 @@ const debounce = (callback, timeoutDelay = 500) => {
 
   return (...rest) => {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+    timeoutId = setTimeout(callback, timeoutDelay, ...rest);
   };
 };
 
-export { setDisabled, unsetDisabled, isEscKey, removeElement, debounce };
+export { setDisabled, unsetDisabled, isEscKey, removeElement, isValidImageType, debounce };
