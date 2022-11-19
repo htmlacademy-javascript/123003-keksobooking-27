@@ -6,7 +6,7 @@ import { getData } from './network.js';
 import { debounce } from './utils.js';
 
 const ADVERTS_COUNT = 10;
-const INITIAL_COORDINATE = {
+const InitialCoordinate = {
   lat: 35.63714,
   lng: 139.79765,
 };
@@ -16,7 +16,7 @@ let adverts = [];
 const initPage = () => {
   deactivateAdvertForm();
   deactivateFilterForm();
-  initMap(INITIAL_COORDINATE);
+  initMap(InitialCoordinate);
   getData((data) => {
     if (data.length === 0) {
       return;
@@ -38,7 +38,7 @@ const initPage = () => {
 const resetPage = () => {
   resetAdvertForm();
   resetFilterForm();
-  resetMap(INITIAL_COORDINATE);
+  resetMap(InitialCoordinate);
 
   createMapAdverts(adverts.slice(0, ADVERTS_COUNT));
 };
