@@ -11,6 +11,7 @@ const OTHER_PIN_ICON = L.icon({
   iconAnchor: [20, 40],
 });
 const INITIAL_SCALE = 12;
+const COORDINATE_DIGIT = 5;
 const mapContainer = document.querySelector('#map-canvas');
 const addressField = document.querySelector('#address');
 const map = L.map(mapContainer);
@@ -45,7 +46,7 @@ const initMap = ((coordinate) => {
 
   mainPinMarker.on('move', (evt) => {
     const targetLocation = evt.target.getLatLng();
-    addressField.value = `${targetLocation.lat.toFixed(5)}, ${targetLocation.lng.toFixed(5)}`;
+    addressField.value = `${targetLocation.lat.toFixed(COORDINATE_DIGIT)}, ${targetLocation.lng.toFixed(COORDINATE_DIGIT)}`;
   });
 });
 

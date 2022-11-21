@@ -17,6 +17,17 @@ const initPage = () => {
   deactivateAdvertForm();
   deactivateFilterForm();
   initMap(INITIAL_COORDINATE);
+};
+
+const resetPage = () => {
+  resetAdvertForm();
+  resetFilterForm();
+  resetMap(INITIAL_COORDINATE);
+
+  createMapAdverts(adverts.slice(0, ADVERTS_COUNT));
+};
+
+setOnMapLoad(() => {
   getData((data) => {
     if (data.length === 0) {
       return;
@@ -33,17 +44,6 @@ const initPage = () => {
 
     addOnFilter(debounceFilterAdverts);
   }, showAlert);
-};
-
-const resetPage = () => {
-  resetAdvertForm();
-  resetFilterForm();
-  resetMap(INITIAL_COORDINATE);
-
-  createMapAdverts(adverts.slice(0, ADVERTS_COUNT));
-};
-
-setOnMapLoad(() => {
   activateAdvertForm();
 });
 
